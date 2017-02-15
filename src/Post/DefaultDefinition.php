@@ -69,7 +69,7 @@ class DefaultDefinition implements DefinitionInterface {
 
     public function getCapabilities()
     {
-        return $this->capabilites;
+        return $this->capabilities;
     }
 
 }

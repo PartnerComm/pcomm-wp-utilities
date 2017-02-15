@@ -52,9 +52,7 @@ class Handler {
             ]
         ];
 
-        add_action('init', function() use ($d, $options) {
-            register_post_type($d->getSlug(), $options);
-        });
+        register_post_type($d->getSlug(), $options);
     }
 
 }

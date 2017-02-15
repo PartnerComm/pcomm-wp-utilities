@@ -48,7 +48,15 @@ class Handler {
             'capabilities' => $d->getCapabilities(),
             'labels' => [
                 'singular_name' => ucwords($d->getSingleName()),
-                'name' => ucwords($d->getPluralName())
+                'name' => ucwords($d->getPluralName()),
+                'add_new_item' => 'Add New '.$d->getSingleName(),
+                'new_item' => 'New '.$d->getSingleName(),
+                'edit_item' => 'Edit '.$d->getSingleName(),
+                'view_item' => 'View '.$d->getSingleName(),
+                'view_items' => 'View '.$d->getPluralName(),
+                'all_items' => 'All '.$d->getPluralName()
+
+
             ]
         ];
 

@@ -7,11 +7,8 @@ function register_post_type($type, $options) {
     global $registeredPostTypes;
     $registeredPostTypes[$type] = $options;
 }
-function add_action($when, $what) {
-    call_user_func($what);
-}
 
-class HandlerTest extends \PHPUnit\Framework\TestCase {
+class PostHandlerTest extends \PHPUnit\Framework\TestCase {
 
     /**
      * @expectedException \Exception

@@ -55,8 +55,6 @@ class Handler {
                 'view_item' => 'View '.$d->getSingleName(),
                 'view_items' => 'View '.$d->getPluralName(),
                 'all_items' => 'All '.$d->getPluralName()
-
-
             ]
         ];
 

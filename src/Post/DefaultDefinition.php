@@ -8,6 +8,12 @@ class DefaultDefinition implements DefinitionInterface {
     protected $plural = '';
 
     protected $rest = false;
+
+    /**
+     * @var array [field => [update => '', get => '']]
+     */
+    protected $restFields = [];
+
     protected $icon = 'dashicons-admin-post';
     protected $taxonomies = ['category', 'post_tag'];
     protected $supports = ['title', 'editor', 'revisions', 'thumbnail', 'excerpt', 'page-attributes', 'custom-fields'];
@@ -50,6 +56,11 @@ class DefaultDefinition implements DefinitionInterface {
     public function getRestSupport()
     {
         return $this->rest;
+    }
+
+    public function getRestFields()
+    {
+        return $this->restFields;
     }
 
     public function getPublic()

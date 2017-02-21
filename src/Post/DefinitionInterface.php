@@ -9,6 +9,7 @@ interface DefinitionInterface {
     public function getSingleName();
     public function getMenuIcon();
     public function getRestSupport();
+    public function getRestFields();
     public function getPublic();
     public function getHasArchive();
     public function getExcludeFromSearch();

@@ -2,13 +2,41 @@
 namespace PComm\WPUtils\Post;
 
 $registeredPostTypes = [];
-
+$registeredRestFields = [];
 function register_post_type($type, $options) {
     global $registeredPostTypes;
     $registeredPostTypes[$type] = $options;
 }
+function register_rest_field($slug, $field, $signature) {
+    global $registeredRestFields;
+    if(empty($registeredRestFields[$slug])) {
+        $registeredRestFields[$slug];
+    }
+    $registeredRestFields[$slug][$field] = $signature;
+}
 
 class PostHandlerTest extends \PHPUnit\Framework\TestCase {
+
+    public function testRegisterRestFields()
+    {
+        $mockDefinition = $this->getMockBuilder('\PComm\WPUtils\Post\DefaultDefinition')
+            ->setMethods(['getSlug', 'getRestFields'])
+            ->getMock();
+
+        $mockDefinition->method('getSlug')->willReturn('foo');
+        $mockDefinition->method('getRestFields')->willReturn([
+            'field1' => ['get' => 'foo', 'update' => 'bar'],
+            'field2' => ['get' => 'foo2', 'update' => 'bar2']
+        ]);
+
+        $handler = new Handler();
+        $handler->addDefinition($mockDefinition);
+        $handler->run();
+
+        global $registeredRestFields;
+        $this->assertTrue(!empty($registeredRestFields['foo']['field1']['get_callback']));
+        $this->assertTrue(!empty($registeredRestFields['foo']['field2']['get_callback']));
+    }
 
     /**
      * @expectedException \Exception

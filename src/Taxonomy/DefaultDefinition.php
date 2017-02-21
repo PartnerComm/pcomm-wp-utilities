@@ -9,7 +9,7 @@ class DefaultDefinition implements DefinitionInterface {
     protected $single = '';
     protected $public = true;
     protected $rest = false;
-    protected $hierarchical = false;
+    protected $hierarchical = true;
 
     public function getSlug()
     {

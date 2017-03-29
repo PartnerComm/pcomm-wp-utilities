@@ -14,4 +14,5 @@ interface DefinitionInterface {
     public function getHasArchive();
     public function getExcludeFromSearch();
     public function getCapabilities();
+    public function getMetaFields();
 }

@@ -13,6 +13,7 @@ class DefaultDefinition implements DefinitionInterface {
      * @var array [field => [update => '', get => '']]
      */
     protected $restFields = [];
+    protected $metaboxes = [];
 
     protected $icon = 'dashicons-admin-post';
     protected $taxonomies = ['category', 'post_tag'];
@@ -81,6 +82,11 @@ class DefaultDefinition implements DefinitionInterface {
     public function getCapabilities()
     {
         return $this->capabilities;
+    }
+
+    public function getMetaFields()
+    {
+        return $this->metaboxes;
     }
 
 }

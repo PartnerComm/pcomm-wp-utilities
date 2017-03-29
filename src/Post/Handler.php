@@ -34,7 +34,20 @@ class Handler {
         foreach($this->definitions as $d) {
             $this->registerPostType($d);
             $this->registerRestFields($d);
+            //$this->registerMetaSave($d);
         }
+    }
+
+    public function initMetaBoxes()
+    {
+        foreach($this->definitions as $d) {
+            $this->registerMetaBoxes($d);
+        }
+    }
+
+    public function initMetaSave($post_id, $post, $update)
+    {
+        $this->saveMetaBoxes($post_id, $post, $update);
     }
 
     private function registerRestFields(DefinitionInterface $d)
@@ -84,6 +97,104 @@ class Handler {
         ];
 
         register_post_type($d->getSlug(), $options);
+    }
+
+    private function registerMetaBoxes(DefinitionInterface $d)
+    {
+        $meta = $d->getMetaFields();
+
+        foreach($meta as $box) {
+            add_meta_box($box['slug'], $box['title'], [$this, 'getHTML'], $d->getSlug(), 'normal', 'high', [$box]);
+        }
+    }
+
+    public function getHTML($post, $box)
+    {
+        $box = $box['args'][0];
+        $prefix = $box['slug'];
+
+        // Use nonce for verification
+        echo '<input type="hidden" name="post_'.$box['slug'].'_meta_box_nonce" value="'.wp_create_nonce(basename(__FILE__)).'" />';
+
+        echo '<ul>';
+
+        foreach ($box['fields'] as $field) {
+
+            // get value of this field if it exists for this post
+            $meta = get_post_meta($post->ID, $field['id'], true);
+            $desc = '';
+            if ($field['desc'] != '') {
+                $desc = '<span style="font-style: italic; color: #999;">' . $field['desc'] . '</span>';
+            }
+            if ($field['type'] == 'select') {
+                echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
+                echo '<select name="'.$field['id'].'" id="'.$field['id'].'">';
+                foreach ($field['options'] as $option) {
+                    echo '<option', $meta == $option['value'] ? ' selected="selected"' : '', ' value="'.$option['value'].'">'.$option['label'].'</option>';
+                }
+                echo '</select>' . $desc .'</li>';
+            }
+            else if ($meta && is_array($meta)) {
+                foreach($meta as $row) {
+                    echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
+                    echo '<input type="'.$field['inputtype'].'" name="'.$field['id'].'" id="'.$field['id'].'" value="' . $row . '" size="30" />' . $desc . '</li>';
+                }
+            }
+            else {
+                echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
+                echo '<input type="'.$field['inputtype'].'" name="'.$field['id'].'" id="'.$field['id'].'" value="' . $meta . '" size="30" />' . $desc . '</li>';
+            }
+
+        }
+
+        echo '<input type="hidden" name="boxes[]" value="'.base64_encode(serialize($box)).'" />';
+
+        echo '</ul>';
+    }
+
+    public function registerMetaSave(DefinitionInterface $d)
+    {
+        add_action('save_post', [$this, 'saveMetaBoxes'], 10, 3);
+    }
+
+    public function saveMetaBoxes($post_id, $post, $update)
+    {
+        $boxes = $_POST['boxes'];
+
+        foreach($boxes as $box) {
+            $box = unserialize(base64_decode($box));
+            // verify nonce
+            if (!wp_verify_nonce($_POST['post_'.$box['slug'].'_meta_box_nonce'], basename(__FILE__)))
+                return $post_id;
+            // check autosave
+            if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)
+                return $post_id;
+            // check permissions
+            if ('page' == $_POST['post_type']) {
+                if (!current_user_can('edit_page', $post_id))
+                    return $post_id;
+            } elseif (!current_user_can('edit_post', $post_id)) {
+                return $post_id;
+            }
+
+            // loop through fields and save the data
+            foreach ($box['fields'] as $field) {
+
+                $old = get_post_meta($post_id, $field['id'], true);
+                if (isset($_POST[$field['id']])) {
+                    $new = $_POST[$field['id']];
+                    if ($new && $new != $old) {
+                        update_post_meta($post_id, $field['id'], $new);
+                    } elseif ('' == $_POST[$field['id']] && $old) {
+                        delete_post_meta($post_id, $field['id'], $old);
+                    }
+                }
+                else {
+                    delete_post_meta($post_id, $field['id'], $old);
+                }
+            } // end foreach
+        }
+
     }
 
 }

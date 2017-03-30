@@ -126,13 +126,17 @@ class Handler {
             if ($field['desc'] != '') {
                 $desc = '<span style="font-style: italic; color: #999;">' . $field['desc'] . '</span>';
             }
-            if ($field['type'] == 'select') {
+            if ($field['inputtype'] == 'select') {
                 echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
                 echo '<select name="'.$field['id'].'" id="'.$field['id'].'">';
                 foreach ($field['options'] as $option) {
                     echo '<option', $meta == $option['value'] ? ' selected="selected"' : '', ' value="'.$option['value'].'">'.$option['label'].'</option>';
                 }
                 echo '</select>' . $desc .'</li>';
+            }
+            else if ($field['inputtype'] == 'textarea') {
+                echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
+                echo '<textarea rows="3" cols="40" name="'.$field['id'].'" id="'.$field['id'].'">' . $meta . '</textarea>';
             }
             else if ($meta && is_array($meta)) {
                 foreach($meta as $row) {

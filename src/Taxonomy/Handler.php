@@ -61,5 +61,6 @@ class Handler {
         );
 
         register_taxonomy($d->getSlug(), $d->getPostTypes(), $args);
+        do_action("create_{$d->getSlug()}");
     }
 }

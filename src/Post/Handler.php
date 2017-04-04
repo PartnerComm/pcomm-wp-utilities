@@ -34,7 +34,7 @@ class Handler {
         foreach($this->definitions as $d) {
             $this->registerPostType($d);
             $this->registerRestFields($d);
-            //$this->registerMetaSave($d);
+            $this->registerMetaSave($d);
         }
     }
 
@@ -102,7 +102,6 @@ class Handler {
     private function registerMetaBoxes(DefinitionInterface $d)
     {
         $meta = $d->getMetaFields();
-
         foreach($meta as $box) {
             add_meta_box($box['slug'], $box['title'], [$this, 'getHTML'], $d->getSlug(), 'normal', 'high', [$box]);
         }

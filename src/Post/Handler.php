@@ -162,7 +162,7 @@ class Handler {
 
     public function saveMetaBoxes($post_id, $post, $update)
     {
-        $boxes = $_POST['boxes'];
+        $boxes = (!empty($_POST['boxes'])) ? $_POST['boxes'] : [];
 
         foreach($boxes as $box) {
             $box = unserialize(base64_decode($box));

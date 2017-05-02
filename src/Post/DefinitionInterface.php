@@ -15,4 +15,5 @@ interface DefinitionInterface {
     public function getExcludeFromSearch();
     public function getCapabilities();
     public function getMetaFields();
+    public function getRewrite();
 }

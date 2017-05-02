@@ -84,6 +84,7 @@ class Handler {
             'taxonomies' => $d->getTaxonomies(),
             'exclude_from_search' => $d->getExcludeFromSearch(),
             'capabilities' => $d->getCapabilities(),
+            'rewrite' => $d->getRewrite(),
             'labels' => [
                 'singular_name' => ucwords($d->getSingleName()),
                 'name' => ucwords($d->getPluralName()),

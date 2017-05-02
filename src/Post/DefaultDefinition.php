@@ -23,6 +23,7 @@ class DefaultDefinition implements DefinitionInterface {
     protected $excludeSearch = false;
     protected $archive = true;
     protected $public = true;
+    protected $rewrite = true;
 
     public function getSlug()
     {
@@ -87,6 +88,11 @@ class DefaultDefinition implements DefinitionInterface {
     public function getMetaFields()
     {
         return $this->metaboxes;
+    }
+
+    public function getRewrite()
+    {
+        return $this->rewrite;
     }
 
 }

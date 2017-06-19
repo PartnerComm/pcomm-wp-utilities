@@ -1,11 +1,9 @@
 {
   "name": "pcomm/wp-utilities",
   "description": "Plugin to work with Wordpress!",
-  "version": "0.0.1",
-  "type": "wordpress-utility",
-  "dist": {
-    "type": "git",
-    "url": "https://partnercomm.git.beanstalkapp.com/pcomm-wp-utilities.git"
+  "version": "1.0.0",
+  "type": "wordpress-utility"
+  
   },
   "authors": [
     {

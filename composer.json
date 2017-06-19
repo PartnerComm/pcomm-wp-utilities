@@ -1,7 +1,6 @@
 {
   "name": "pcomm/wp-utilities",
   "description": "Plugin to work with Wordpress!",
-  "version": "1.0.0",
   "type": "wordpress-utility",
   "authors": [
     {

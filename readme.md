@@ -1,4 +1,4 @@
-##PartnerComm Wordpress Utilities
+# PartnerComm Wordpress Utilities
 Package of utilities to help make wordpress plugin and theme development faster and easier.
 
 ##Sections

@@ -10,9 +10,14 @@ function register_post_type($type, $options) {
 function register_rest_field($slug, $field, $signature) {
     global $registeredRestFields;
     if(empty($registeredRestFields[$slug])) {
-        $registeredRestFields[$slug];
+        $registeredRestFields[$slug] = [];
     }
-    $registeredRestFields[$slug][$field] = $signature;
+    if(empty($registeredRestFields[$slug][$field])) {
+        $registeredRestFields[$slug][$field] = $signature;
+    }    
+}
+function add_action($action, $place, $num, $num2) {
+    #TODO : Add test for add action //thanks, chad.
 }
 
 class PostHandlerTest extends \PHPUnit\Framework\TestCase {

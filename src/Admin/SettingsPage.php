@@ -64,7 +64,7 @@ abstract class SettingsPage {
     }
 
     add_submenu_page( 'pc-plugins', $this->pageTitle, $this->menuTitle, 'manage_options', $this->slug, function() {
-      include('views/options-page.php');
+      include('../Views/settings-options.php');
     });
   }
 

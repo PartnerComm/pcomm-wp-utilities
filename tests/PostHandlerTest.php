@@ -3,6 +3,8 @@ namespace PComm\WPUtils\Post;
 
 $registeredPostTypes = [];
 $registeredRestFields = [];
+$registeredMetaBoxes = [];
+
 function register_post_type($type, $options) {
     global $registeredPostTypes;
     $registeredPostTypes[$type] = $options;
@@ -18,6 +20,11 @@ function register_rest_field($slug, $field, $signature) {
 }
 function add_action($action, $place, $num, $num2) {
     #TODO : Add test for add action //thanks, chad.
+}
+
+function add_meta_box(...$args) {
+   global $registeredMetaBoxes;
+   $registeredMetaBoxes[$args[0]]['title'] = $args[1];
 }
 
 class PostHandlerTest extends \PHPUnit\Framework\TestCase {
@@ -120,5 +127,94 @@ class PostHandlerTest extends \PHPUnit\Framework\TestCase {
         global $registeredPostTypes;
         $this->assertTrue(!empty($registeredPostTypes['abc123']));
         $this->assertTrue(!empty($registeredPostTypes['abc1234']));
+    }
+
+    public function testCustomMetaSourceIsCalled()
+    {
+        $mockDefinition = $this->getMockBuilder('\PComm\WPUtils\Post\DefaultDefinition')
+            ->setMethods(['getMetaFields', 'getGenerateBoxes', 'getSlug', 'getRestFields'])
+            ->getMock();
+
+        $mockDefinition->method('getSlug')->willReturn('foo');
+        $mockDefinition->method('getRestFields')->willReturn([
+            'field1' => ['get' => 'foo', 'update' => 'bar'],
+            'field2' => ['get' => 'foo2', 'update' => 'bar2']
+        ]);
+
+        $mockDefinition->method('getMetaFields')->willReturn([[
+                'slug' => 'mock-slug',
+                'title' => 'Mock Slug Fields',
+                'source' => 'getGenerateBoxes',
+                'fields' => []
+            ]]);
+
+        $mockDefinition->expects($this->once())->method('getGenerateBoxes');
+
+        $handler = new Handler();
+        $handler->addDefinition($mockDefinition);
+        $handler->initMetaBoxes();
+    }
+
+    public function testCustomMetaSourceFailsGracefully()
+    {
+        global $registeredMetaBoxes;
+
+        $mockDefinition = $this->getMockBuilder('\PComm\WPUtils\Post\DefaultDefinition')
+            ->setMethods(['getMetaFields', 'getSlug', 'getRestFields'])
+            ->getMock();
+
+        $mockDefinition->method('getSlug')->willReturn('foo');
+        $mockDefinition->method('getRestFields')->willReturn([
+            'field1' => ['get' => 'foo', 'update' => 'bar'],
+            'field2' => ['get' => 'foo2', 'update' => 'bar2']
+        ]);
+
+
+        $mockDefinition->method('getMetaFields')->willReturn([[
+            'slug' => 'mock-slug',
+            'title' => 'Mock Slug Fields',
+            'source' => 'getGenerateBoxes',
+            'fields' => []
+        ]]);
+
+        $handler = new Handler();
+        $handler->addDefinition($mockDefinition);
+        $handler->initMetaBoxes();
+        $this->assertEquals($registeredMetaBoxes['mock-slug']['title'], 'Mock Slug Fields :: Error Loading Dynamic Fields From getGenerateBoxes');
+    }
+
+    public function testCustomMetaSourceIsCalledTwice()
+    {
+        $mockDefinition = $this->getMockBuilder('\PComm\WPUtils\Post\DefaultDefinition')
+            ->setMethods(['getMetaFields', 'getGenerateBoxes', 'getWonderFullFields', 'getSlug', 'getRestFields'])
+            ->getMock();
+
+        $mockDefinition->method('getSlug')->willReturn('foo');
+        $mockDefinition->method('getRestFields')->willReturn([
+            'field1' => ['get' => 'foo', 'update' => 'bar'],
+            'field2' => ['get' => 'foo2', 'update' => 'bar2']
+        ]);
+
+        $mockDefinition->method('getMetaFields')->willReturn([
+            [
+                'slug' => 'mock-slug',
+                'title' => 'Mock Slug Fields',
+                'source' => 'getGenerateBoxes',
+                'fields' => []
+            ],
+            [
+                'slug' => 'mock-slug2',
+                'title' => 'Mock Slug Fields2',
+                'source' => 'getWonderFullFields',
+                'fields' => []
+            ]
+            ]);
+
+        $mockDefinition->expects($this->once())->method('getGenerateBoxes');
+        $mockDefinition->expects($this->once())->method('getWonderFullFields');
+
+        $handler = new Handler();
+        $handler->addDefinition($mockDefinition);
+        $handler->initMetaBoxes();
     }
 }

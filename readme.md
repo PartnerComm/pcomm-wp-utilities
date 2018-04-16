@@ -5,16 +5,26 @@ Package of utilities to help make wordpress plugin and theme development faster 
 * Custom Post Types, Terms, and Taxonomies
 * Plugin Settings Generator
 * Helpers
-
+<hr>
 ### Custom Post Types
 To create a custom post type, extend the `PComm\WPUtils\Post\DefaultDefinition` and add definitions for slugs, terms, meta boxes, etc.
-
+#### Cusom Metaboxes on Post Types
+To add a custom metabox callback method, declare it in the box source
+~~~php
+[
+    'slug' => 'meta-box-slug',
+    'title' => 'Meta Box Title',
+    'source' => 'getGenerateBoxes', //This can be any public method in your PostDefinition
+    'fields' => [] //Will be replaced with source callback if present
+],
+~~~
+<hr>
 ### Custom Taxonomy
 To create a custom taxonomy, extend the `PComm\WPUtils\Taxonomy\DefaultDefinition` and add definitions for slugs, terms, meta boxes, etc.
-
+<hr>
 ### Custom Terms
 To create a custom taxonomy, extend the `PComm\WPUtils\Taxonomy\DefaultDefinition` and add definitions for slugs, terms, meta boxes, etc.
-
+<hr>
 ### Settings Pages
 To create a custom settings page for your plugin, create a new settings page class that extends `PComm\WPUtils\Admin\SettingsPage` instantiate it, and register init hooks
 

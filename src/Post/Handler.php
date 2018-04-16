@@ -104,6 +104,11 @@ class Handler {
     {
         $meta = $d->getMetaFields();
         foreach($meta as $box) {
+            if(!empty($box['source']) && method_exists($d, $box['source'])) {
+                $d->{$box['source']}();
+            } elseif ( !empty($box['source'])  && !method_exists($d, $box['source'])) {
+                $box['title'] = $box['title'] . " :: Error Loading Dynamic Fields From {$box['source']}";
+            }
             add_meta_box($box['slug'], $box['title'], [$this, 'getHTML'], $d->getSlug(), 'normal', 'high', [$box]);
         }
     }

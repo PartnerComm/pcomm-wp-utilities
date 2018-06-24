@@ -92,6 +92,9 @@ abstract class SettingsPage {
               case 'text':
                 $fieldOutput = "<input type='text' name='{$this->slug}[{$field}]' value='{$value}' />";
               break;
+              case 'textarea':
+                $fieldOutput = "<textarea style='width: 500px; height: 250px;' name='{$this->slug}[{$field}]'>{$value}</textarea>";
+              break;
               case 'select':
                 $fieldOutput = "<select name='{$this->slug}[{$field}]'>";
                   foreach($fieldData['options'] as $optVal => $label) {

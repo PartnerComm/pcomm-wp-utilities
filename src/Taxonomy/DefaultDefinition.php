@@ -9,7 +9,8 @@ class DefaultDefinition implements DefinitionInterface {
     protected $single = '';
     protected $public = true;
     protected $rest = false;
-    protected $hierarchical = true;
+	protected $hierarchical = true;
+	protected $rewrite = true;
 
     public function getSlug()
     {
@@ -44,5 +45,9 @@ class DefaultDefinition implements DefinitionInterface {
     public function getIsHierarchical()
     {
         return $this->hierarchical;
-    }
+	}
+	
+	public function getRewrite() {
+		return $this->rewrite;
+	}
 }

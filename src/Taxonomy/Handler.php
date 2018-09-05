@@ -57,7 +57,8 @@ class Handler {
             'show_admin_column'     => true,
             'update_count_callback' => '_update_post_term_count',
             'query_var'             => true,
-            'show_in_rest'          => $d->getRestSupport()
+			'show_in_rest'          => $d->getRestSupport(),
+			'rewrite'				=> $d->getRewrite(),
         );
 
         register_taxonomy($d->getSlug(), $d->getPostTypes(), $args);

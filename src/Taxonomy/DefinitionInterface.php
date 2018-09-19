@@ -7,7 +7,8 @@ interface DefinitionInterface {
     public function getPluralName();
     public function getSingleName();
     public function getIsPublic();
-    public function getRestSupport();
+	public function getRestSupport();
+	public function getRestFields();
 	public function getIsHierarchical();
 	public function getRewrite();
 }

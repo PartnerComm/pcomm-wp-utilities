@@ -8,7 +8,8 @@ class DefaultDefinition implements DefinitionInterface {
     protected $plural = '';
     protected $single = '';
     protected $public = true;
-    protected $rest = false;
+	protected $rest = false;
+	protected $restFields = [];
 	protected $hierarchical = true;
 	protected $rewrite = true;
 
@@ -42,6 +43,11 @@ class DefaultDefinition implements DefinitionInterface {
         return $this->rest;
     }
 
+	public function getRestFields()
+    {
+        return $this->restFields;
+	}
+	
     public function getIsHierarchical()
     {
         return $this->hierarchical;

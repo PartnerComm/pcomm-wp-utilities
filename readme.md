@@ -78,3 +78,7 @@ To build custom settings fields, follow the below pattern
 
 To access a Setting in your code, you can use the helper function directly
 `$setting = \PComm\WPUtils\Helpers\getSetting($pluginSlug, $settingSlug);`
+
+## Changelog
+* 1.1.7 - September 18, 2018
+	* Add ability to register rest fields for taxonomies in the same way as for posts

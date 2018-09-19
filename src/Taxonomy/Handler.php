@@ -33,6 +33,29 @@ class Handler {
         foreach($this->definitions as $d) {
             $this->registerTaxonomy($d);
         }
+	}
+	
+	public function registerRestFields(DefinitionInterface $d)
+    {
+		$fields = $d->getRestFields();
+        foreach($fields as $field => $definition) {
+            $this->registerRestField($d, $field, $definition);
+        }
+    }
+
+    private function registerRestField(DefinitionInterface $d, $field, $definition)
+    {
+        $update = (isset($definition['update'])) ? [$d, $definition['update']] : null;
+		$get = (isset($definition['get'])) ? [$d, $definition['get']] : null;
+		
+        register_rest_field( $d->getSlug(),
+            $field,
+            array(
+                'get_callback'    => $get,
+                'update_callback' => $update,
+                'schema'          => null,
+            )
+        );
     }
 
     private function registerTaxonomy(DefinitionInterface $d)

@@ -141,7 +141,7 @@ class Handler {
             }
             else if ($field['inputtype'] == 'textarea') {
                 echo '<li class="'. $prefix . 'repeatable"><label style="display:block; font-weight: bold; margin-top: 1em;" for="' . $field['id'] . '">' . $field['label'] . '</label>';
-                echo '<textarea rows="3" cols="40" name="'.$field['id'].'" id="'.$field['id'].'">' . $meta . '</textarea>';
+                echo '<textarea rows="7" cols="70" name="'.$field['id'].'" id="'.$field['id'].'">' . $meta . '</textarea>';
             }
             else if ($meta && is_array($meta)) {
                 foreach($meta as $row) {

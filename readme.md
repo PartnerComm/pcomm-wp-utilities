@@ -79,7 +79,21 @@ To build custom settings fields, follow the below pattern
 To access a Setting in your code, you can use the helper function directly
 `$setting = \PComm\WPUtils\Helpers\getSetting($pluginSlug, $settingSlug);`
 
+<hr>
+### Dump Debug Tool
+To get a highly detailed debug dump of input, simply run
+```
+dump($myVar)
+```
+
+You will get a screen like this:
+![symphony dump](https://symfony.com/doc/current/_images/01-simple.png)
+
+For more details and documentation, visit the [The VarDumper Component](https://symfony.com/doc/current/components/var_dumper.html) in Symphony's documentation.
+
 ## Changelog
+* 1.1.9 - March 1, 2019
+  * Add Symphony/VarDumper tool
 * 1.1.8 - December 13, 2018
 	* Enlarge textarea metaboxes
 * 1.1.7 - September 18, 2018
